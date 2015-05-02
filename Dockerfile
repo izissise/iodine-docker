@@ -12,14 +12,12 @@
 #
 #################################################
 
-# Use phusion/baseimage as base image.
-FROM phusion/baseimage:0.9.16
+FROM debian
 
 MAINTAINER Hugues Morisset <morisset.hugues@gmail.com>
 
 # Set environment variables and regen SSH host keys
 ENV HOME /root
-RUN /etc/my_init.d/00_regen_ssh_host_keys.sh
 
 RUN apt-get update && apt-get install -y net-tools
 RUN apt-get install -y git make gcc
@@ -31,14 +29,14 @@ RUN git clone --branch iodine-0.7 https://github.com/yarrick/iodine.git
 RUN cd iodine && make && make install
 
 # Add the runit iodine service
-RUN mkdir /etc/service/iodined
-ADD iodined.sh /etc/service/iodined/run
+ADD iodined.sh /
+RUN chmod +x iodined.sh
 
 # Expose the DNS port, remember to run -p 53:53/udp
 EXPOSE 53/udp
 
 # Use baseimage-docker's init system.
-CMD ["/sbin/my_init"]
+CMD ["/iodined.sh"]
 
 # Clean up APT when done.
 RUN apt-get remove --purge -y git make gcc zlib1g-dev
