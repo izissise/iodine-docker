@@ -6,8 +6,15 @@ TUNNEL_IP=${IODINE_TUNNEL_IP:-"10.53.0.1/27"}
 mkdir -p /dev/net
 mknod /dev/net/tun c 10 200
 
+iptables -A POSTROUTING -s 10.53.0.0/24 -o eth0 -j MASQUERADE
+iptables -A FORWARD -i dns0 -j ACCEPT
+iptables -A FORWARD -i dns0 -o eth0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i eth0 -o dns0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+
+
+
 while [ 1 ]
 do
-  iodined -c -u nobody -f -P $IODINE_PASSWORD $TUNNEL_IP $IODINE_HOST 
+  iodined -c -u nobody -f -P $IODINE_PASSWORD $TUNNEL_IP $IODINE_HOST
   sleep 2
 done

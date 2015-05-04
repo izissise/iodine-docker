@@ -19,7 +19,7 @@ MAINTAINER Hugues Morisset <morisset.hugues@gmail.com>
 # Set environment variables and regen SSH host keys
 ENV HOME /root
 
-RUN apt-get update && apt-get install -y net-tools
+RUN apt-get update && apt-get install -y iptables net-tools
 RUN apt-get install -y git make gcc
 RUN apt-get install -y zlib1g-dev
 
