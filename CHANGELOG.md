@@ -1,5 +1,10 @@
 # Changelog
 
+### v1.4
+* Use debian as a base image
+* Add iptable rule to forward client traffic
+* Build iodine at image build
+
 ### v1.3
 * Remove copying of `authorized_keys` into image
 * Use `passenger/baseimage` v0.9.16
