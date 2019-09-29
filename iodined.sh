@@ -8,6 +8,7 @@ if [ ! -c /dev/net/tun ]; then
     mknod /dev/net/tun c 10 200
 fi
 
+echo "Network: $TUNNEL_IP"
 iptables -t nat -A POSTROUTING -s $TUNNEL_IP -o eth0 -j MASQUERADE
 # iptables -t nat -C POSTROUTING -s $TUNNEL_IP -o eth0 -j MASQUERADE || {
 #   
@@ -25,8 +26,4 @@ iptables -t nat -A POSTROUTING -s $TUNNEL_IP -o eth0 -j MASQUERADE
 #   iptables -A FORWARD -i eth0 -o dns0 -m state --state RELATED,ESTABLISHED -j ACCEPT  
 #   }
 
-while [ 1 ]
-do
-  iodined -c -u nobody -f -P $IODINE_PASSWORD $TUNNEL_IP $IODINE_HOST
-  sleep 2
-done
+iodined -c -u nobody -f -P $IODINE_PASSWORD $TUNNEL_IP $IODINE_HOST

@@ -1,5 +1,9 @@
 # Changelog
 
+### v1.5
+
+* Smaller image
+
 ### v1.4
 * Use debian as a base image
 * Add iptable rule to forward client traffic
